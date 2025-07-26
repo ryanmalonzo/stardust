@@ -1,0 +1,9 @@
+---
+- name: Install Docker on Stardust VM
+  hosts: docker
+  become: true
+  roles:
+    - geerlingguy.docker
+  vars:
+    docker_users:
+      - stardust

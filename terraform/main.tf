@@ -18,7 +18,7 @@ resource "proxmox_virtual_environment_download_file" "debian_12_genericcloud" {
 }
 
 data "local_file" "ssh_public_key" {
-  filename = "${path.module}/../key.pub"
+  filename = "${path.module}/../keys/key.pub"
 }
 
 resource "proxmox_virtual_environment_file" "docker_cloud_init" {
