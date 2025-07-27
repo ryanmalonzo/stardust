@@ -7,16 +7,6 @@
   remote_user: stardust
   vars:
     newt_compose_path: /home/stardust/newt/compose.yaml
-    newt_compose_content: |
-      services:
-        newt:
-          image: fosrl/newt
-          container_name: newt
-          restart: unless-stopped
-          environment:
-            - PANGOLIN_ENDPOINT=https://pangolin.ryanmalonzo.com
-            - NEWT_ID={{ lookup('env', 'NEWT_ID') }}
-            - NEWT_SECRET={{ lookup('env', 'NEWT_SECRET') }}
   tasks:
     - name: Ensure newt directory exists
       ansible.builtin.file:
@@ -28,8 +18,8 @@
 
     - name: Copy Newt Docker Compose file
       ansible.builtin.copy:
+        src: ../docker/newt-compose.yaml
         dest: "{{ newt_compose_path }}"
-        content: "{{ newt_compose_content }}"
         owner: stardust
         group: stardust
         mode: "0644"
