@@ -3,6 +3,10 @@ provider "scaleway" {
   region = var.scaleway_region
 }
 
+locals {
+  tags = ["stardust"]
+}
+
 resource "scaleway_iam_ssh_key" "ssh_key" {
   name       = "stardust"
   public_key = local.ssh_public_key
@@ -36,11 +40,14 @@ resource "scaleway_instance_security_group" "www" {
     port     = "51820"
     protocol = "UDP"
   }
+
+  tags = local.tags
 }
 
 resource "scaleway_instance_ip" "pangolin_vm_ip" {
   project_id = var.scaleway_project_id
   type       = "routed_ipv6"
+  tags       = local.tags
 }
 
 resource "scaleway_instance_server" "pangolin_vm" {
@@ -59,4 +66,6 @@ resource "scaleway_instance_server" "pangolin_vm" {
   security_group_id = scaleway_instance_security_group.www.id
 
   admin_password_encryption_ssh_key_id = scaleway_iam_ssh_key.ssh_key.id
+
+  tags = local.tags
 }
