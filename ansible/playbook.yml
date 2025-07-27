@@ -1,5 +1,5 @@
 ---
-- name: Install Docker on Stardust VM
+- name: Install Docker on Proxmox "docker" VM
   hosts: docker
   become: true
   roles:
@@ -7,3 +7,12 @@
   vars:
     docker_users:
       - stardust
+
+- name: Install Docker on Scaleway "pangolin" VM
+  hosts: pangolin
+  become: true
+  roles:
+    - geerlingguy.docker
+  vars:
+    docker_users:
+      - root
