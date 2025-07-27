@@ -6,5 +6,3 @@ validate_certs: false
 want_facts: true
 compose:
   ansible_host: proxmox_agent_interfaces[1].get("ip-addresses")[0] | default(proxmox_net0.ip) | ansible.utils.ipaddr("address")
-  ansible_user: stardust
-  ansible_ssh_private_key_file: ../keys/key

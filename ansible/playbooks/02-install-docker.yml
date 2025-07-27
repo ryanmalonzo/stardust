@@ -1,3 +1,6 @@
+---
+# Install Docker on Docker and Pangolin VMs
+
 - name: Install Docker on docker VM
   hosts: docker
   become: true

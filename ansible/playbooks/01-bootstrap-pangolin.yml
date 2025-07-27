@@ -1,4 +1,6 @@
 ---
+# Bootstrap Pangolin VM
+
 - name: Bootstrap pangolin VM (run as root)
   hosts: pangolin
   become: true

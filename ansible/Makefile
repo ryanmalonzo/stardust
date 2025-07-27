@@ -1,10 +1,13 @@
-.PHONY: install bootstrap playbook
+.PHONY: install bootstrap docker newt
 
 bootstrap:
-	ansible-playbook bootstrap.yml
+	ansible-playbook playbooks/01-bootstrap-pangolin.yml
 
-playbook:
-	ansible-playbook playbook.yml
+docker:
+	ansible-playbook playbooks/02-install-docker.yml
+
+newt:
+	ansible-playbook playbooks/03-deploy-newt-agent.yml
 
 install:
 	ansible-galaxy install -r requirements.yml
