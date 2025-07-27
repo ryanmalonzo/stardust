@@ -15,8 +15,8 @@ services:
       - "socket-proxy:/run/proxy"
     environment:
       - PANGOLIN_ENDPOINT=https://pangolin.ryanmalonzo.com
-      - NEWT_ID=${NEWT_ID}
-      - NEWT_SECRET=${NEWT_SECRET}
+      - NEWT_ID={{ lookup('env', 'NEWT_ID') }}
+      - NEWT_SECRET={{ lookup('env', 'NEWT_SECRET') }}
       - DOCKER_SOCKET=/run/proxy/docker.sock
     depends_on:
       - socket-proxy

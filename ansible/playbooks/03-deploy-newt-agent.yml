@@ -16,8 +16,8 @@
         group: stardust
         mode: "0755"
 
-    - name: Copy Newt Docker Compose file
-      ansible.builtin.copy:
+    - name: Template Newt Docker Compose file with secrets
+      ansible.builtin.template:
         src: ../docker/newt-compose.yaml
         dest: "{{ newt_compose_path }}"
         owner: stardust
