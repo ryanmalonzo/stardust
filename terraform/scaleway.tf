@@ -3,6 +3,12 @@ provider "scaleway" {
   region = var.scaleway_region
 }
 
+resource "scaleway_iam_ssh_key" "ssh_key" {
+  name       = "stardust"
+  public_key = local.ssh_public_key
+  project_id = var.scaleway_project_id
+}
+
 resource "scaleway_instance_security_group" "www" {
   project_id              = var.scaleway_project_id
   inbound_default_policy  = "drop"
@@ -16,6 +22,12 @@ resource "scaleway_instance_security_group" "www" {
   inbound_rule {
     action = "accept"
     port   = "443"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = "22"
+    ip_range = "::/0"
   }
 
   # Wireguard
@@ -45,4 +57,6 @@ resource "scaleway_instance_server" "pangolin_vm" {
   ip_id = scaleway_instance_ip.pangolin_vm_ip.id
 
   security_group_id = scaleway_instance_security_group.www.id
+
+  admin_password_encryption_ssh_key_id = scaleway_iam_ssh_key.ssh_key.id
 }

@@ -17,10 +17,6 @@ resource "proxmox_virtual_environment_download_file" "debian_12_genericcloud" {
   url          = "https://cdimage.debian.org/cdimage/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
 }
 
-data "local_file" "ssh_public_key" {
-  filename = "${path.module}/../keys/key.pub"
-}
-
 resource "proxmox_virtual_environment_file" "docker_cloud_init" {
   content_type = "snippets"
   datastore_id = data.proxmox_virtual_environment_datastores.terraform.datastores[0].id
@@ -31,7 +27,7 @@ resource "proxmox_virtual_environment_file" "docker_cloud_init" {
       hostname = "docker"
       timezone = var.timezone
       username = "stardust"
-      ssh_key  = trimspace(data.local_file.ssh_public_key.content)
+      ssh_key  = local.ssh_public_key
     })
 
     file_name = "docker-cloud-init.yaml"
