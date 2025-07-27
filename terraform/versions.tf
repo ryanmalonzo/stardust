@@ -10,9 +10,5 @@ terraform {
       source  = "bpg/proxmox"
       version = "0.80.0"
     }
-    scaleway = {
-      source  = "scaleway/scaleway"
-      version = "2.58.0"
-    }
   }
 }
