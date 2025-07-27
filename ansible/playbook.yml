@@ -1,5 +1,4 @@
----
-- name: Install Docker on Proxmox "docker" VM
+- name: Install Docker on docker VM
   hosts: docker
   become: true
   roles:
@@ -8,11 +7,32 @@
     docker_users:
       - stardust
 
-- name: Install Docker on Scaleway "pangolin" VM
+- name: Install Docker on pangolin VM
   hosts: pangolin
   become: true
+  remote_user: stardust
   roles:
     - geerlingguy.docker
   vars:
     docker_users:
-      - root
+      - stardust
+
+- name: Download Pangolin installer script on pangolin VM
+  hosts: pangolin
+  remote_user: stardust
+  tasks:
+    - name: Create pangolin directory
+      ansible.builtin.file:
+        path: /home/stardust/pangolin
+        state: directory
+        mode: "0755"
+        owner: stardust
+        group: stardust
+    - name: Download Pangolin installer
+      ansible.builtin.get_url:
+        url: https://github.com/fosrl/pangolin/releases/latest/download/installer_linux_amd64
+        dest: /home/stardust/pangolin/installer
+        mode: "0755"
+        force: yes
+        owner: stardust
+        group: stardust

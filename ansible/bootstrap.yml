@@ -1,0 +1,48 @@
+---
+- name: Bootstrap pangolin VM (run as root)
+  hosts: pangolin
+  become: true
+  remote_user: root
+  vars:
+    new_user: stardust
+    new_user_ssh_key: "{{ lookup('file', '../keys/key.pub') }}"
+  tasks:
+    - name: Ensure new user exists
+      ansible.builtin.user:
+        name: "{{ new_user }}"
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+
+    - name: Ensure .ssh directory exists
+      ansible.builtin.file:
+        path: "/home/{{ new_user }}/.ssh"
+        state: directory
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: "0700"
+
+    - name: Set authorized key for new user
+      ansible.builtin.authorized_key:
+        user: "{{ new_user }}"
+        key: "{{ new_user_ssh_key }}"
+        state: present
+
+    - name: Ensure sudo is installed
+      ansible.builtin.package:
+        name: sudo
+        state: present
+
+    - name: Allow new user passwordless sudo
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ new_user }}"
+        content: "{{ new_user }} ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+
+  roles:
+    - role: devsec.hardening.ssh_hardening
+      vars:
+        ssh_server_password_login: false
+        ssh_permit_root_login: "no"
