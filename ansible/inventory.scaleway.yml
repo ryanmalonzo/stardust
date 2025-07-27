@@ -1,0 +1,5 @@
+all:
+  hosts:
+    pangolin:
+      ansible_host: 2001:bc8:710:e403:dc00:ff:fec1:6b87
+      ansible_user: root

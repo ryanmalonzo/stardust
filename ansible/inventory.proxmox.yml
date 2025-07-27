@@ -1,4 +1,3 @@
-# Proxmox dynamic inventory for Ansible
 plugin: community.general.proxmox
 url: '{{ lookup("env", "PROXMOX_VE_ENDPOINT_URL") }}'
 user: '{{ lookup("env", "PROXMOX_VE_USERNAME") }}'
