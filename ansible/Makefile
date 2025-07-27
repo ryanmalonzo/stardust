@@ -9,5 +9,8 @@ docker:
 newt:
 	ansible-playbook playbooks/03-deploy-newt-agent.yml
 
+portainer:
+	ansible-playbook playbooks/04-deploy-portainer-be.yml
+
 install:
 	ansible-galaxy install -r requirements.yml

@@ -6,7 +6,7 @@
   become: true
   remote_user: stardust
   vars:
-    newt_compose_path: /home/stardust/newt/compose.yaml
+    dest_compose_path: /home/stardust/newt/compose.yaml
   tasks:
     - name: Ensure newt directory exists
       ansible.builtin.file:
@@ -18,8 +18,8 @@
 
     - name: Template Newt Docker Compose file with secrets
       ansible.builtin.template:
-        src: ../docker/newt-compose.yaml
-        dest: "{{ newt_compose_path }}"
+        src: ../docker/newt.yaml
+        dest: "{{ dest_compose_path }}"
         owner: stardust
         group: stardust
         mode: "0644"

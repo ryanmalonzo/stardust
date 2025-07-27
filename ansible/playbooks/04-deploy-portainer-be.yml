@@ -1,0 +1,34 @@
+---
+# Deploy Portainer BE to Docker VM using Docker Compose
+
+- name: Deploy Portainer BE to Docker VM
+  hosts: docker
+  become: true
+  remote_user: stardust
+  vars:
+    dest_compose_path: /home/stardust/portainer/compose.yaml
+  tasks:
+    - name: Ensure portainer directory exists
+      ansible.builtin.file:
+        path: /home/stardust/portainer
+        state: directory
+        owner: stardust
+        group: stardust
+        mode: "0755"
+
+    - name: Template Portainer BE Docker Compose file
+      ansible.builtin.template:
+        src: ../docker/portainer-compose.yaml
+        dest: "{{ dest_compose_path }}"
+        owner: stardust
+        group: stardust
+        mode: "0644"
+
+    - name: Deploy Portainer BE with Docker Compose v2
+      community.docker.docker_compose_v2:
+        project_src: /home/stardust/portainer
+        files:
+          - compose.yaml
+        state: present
+      become: true
+      become_user: stardust
