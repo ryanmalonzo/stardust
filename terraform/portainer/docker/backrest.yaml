@@ -1,0 +1,20 @@
+services:
+  backrest:
+    image: garethgeorge/backrest:v1.8.1-scratch
+    container_name: backrest
+    hostname: backrest
+    ports:
+      - "9898:9898"
+    volumes:
+      - ./backrest/data:/data
+      - ./backrest/config:/config
+      - ./backrest/cache:/cache
+      - ./backrest/tmp:/tmp
+      - ${DOCKER_VOLUMES_ROOT}:/userdata
+    environment:
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TMPDIR=/tmp
+      - TZ=${TZ}
+    restart: unless-stopped

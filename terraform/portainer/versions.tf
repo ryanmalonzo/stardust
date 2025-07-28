@@ -3,8 +3,8 @@ terraform {
 
   required_providers {
     portainer = {
-      source  = "Parallels/portainer"
-      version = ">= 1.0.0"
+      source  = "portainer/portainer"
+      version = "1.9.0"
     }
   }
 }

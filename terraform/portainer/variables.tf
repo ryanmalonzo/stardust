@@ -1,11 +1,9 @@
-variable "portainer_endpoint" {
-  type = string
+variable "docker_volumes_root" {
+  type    = string
+  default = "/opt/appdata"
 }
 
-variable "portainer_username" {
-  type = string
-}
-
-variable "portainer_password" {
-  type = string
+variable "timezone" {
+  type    = string
+  default = "Europe/Paris"
 }
