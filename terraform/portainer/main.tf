@@ -7,13 +7,22 @@ resource "portainer_environment" "local" {
   tls_skip_verify        = true
 }
 
+data "local_file" "backrest" {
+  filename = "${path.module}/docker/backrest.yaml"
+}
+
 resource "portainer_stack" "backrest" {
   name            = "backrest"
   deployment_type = "standalone"
-  method          = "file"
+  method          = "string"
   endpoint_id     = portainer_environment.local.id
 
-  stack_file_path = "./docker/backrest.yaml"
+  stack_file_content = data.local_file.backrest.content
+
+  env {
+    name  = "BACKREST_ROOT"
+    value = "/opt/backrest"
+  }
 
   env {
     name  = "DOCKER_VOLUMES_ROOT"

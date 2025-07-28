@@ -6,10 +6,10 @@ services:
     ports:
       - "9898:9898"
     volumes:
-      - ./backrest/data:/data
-      - ./backrest/config:/config
-      - ./backrest/cache:/cache
-      - ./backrest/tmp:/tmp
+      - ${BACKREST_ROOT}/data:/data
+      - ${BACKREST_ROOT}/config:/config
+      - ${BACKREST_ROOT}/cache:/cache
+      - ${BACKREST_ROOT}/tmp:/tmp
       - ${DOCKER_VOLUMES_ROOT}:/userdata
     environment:
       - BACKREST_DATA=/data
