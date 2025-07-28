@@ -4,7 +4,7 @@
   become: true
   vars:
     nfs_exports:
-      - "/tank/media 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)"
+      - "/tank/media {{ proxmox_subnet }}(rw,sync,no_subtree_check,no_root_squash)"
 
   pre_tasks:
     - name: Check if ZFS dataset tank/media exists
