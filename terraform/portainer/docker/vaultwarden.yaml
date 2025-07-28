@@ -3,7 +3,7 @@ services:
     image: vaultwarden/server:1.34.2-alpine
     container_name: vaultwarden
     volumes:
-      - ${DOCKER_VOLUMES_ROOT}/vaultwarden:/data
+      - ${DOCKER_APPDATA}/vaultwarden:/data
     environment:
       DOMAIN: https://vaultwarden.ryanmalonzo.com
     ports:

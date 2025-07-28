@@ -6,11 +6,11 @@ services:
     ports:
       - "9898:9898"
     volumes:
-      - ${BACKREST_ROOT}/data:/data
-      - ${BACKREST_ROOT}/config:/config
-      - ${BACKREST_ROOT}/cache:/cache
-      - ${BACKREST_ROOT}/tmp:/tmp
-      - ${DOCKER_VOLUMES_ROOT}:/userdata
+      - ${DOCKER_BACKREST}/data:/data
+      - ${DOCKER_BACKREST}/config:/config
+      - ${DOCKER_BACKREST}/cache:/cache
+      - ${DOCKER_BACKREST}/tmp:/tmp
+      - ${DOCKER_APPDATA}:/userdata
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json

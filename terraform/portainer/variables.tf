@@ -1,4 +1,4 @@
-variable "docker_volumes_root" {
+variable "docker_appdata" {
   type    = string
   default = "/opt/appdata"
 }
@@ -6,4 +6,9 @@ variable "docker_volumes_root" {
 variable "timezone" {
   type    = string
   default = "Europe/Paris"
+}
+
+variable "zfs_media" {
+  type    = string
+  default = "/mnt/media"
 }

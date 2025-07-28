@@ -20,13 +20,13 @@ resource "portainer_stack" "backrest" {
   stack_file_content = data.local_file.backrest.content
 
   env {
-    name  = "BACKREST_ROOT"
+    name  = "DOCKER_BACKREST"
     value = "/opt/backrest"
   }
 
   env {
-    name  = "DOCKER_VOLUMES_ROOT"
-    value = var.docker_volumes_root
+    name  = "DOCKER_APPDATA"
+    value = var.docker_appdata
   }
 
   env {
@@ -48,7 +48,35 @@ resource "portainer_stack" "vaultwarden" {
   stack_file_content = data.local_file.vaultwarden.content
 
   env {
-    name  = "DOCKER_VOLUMES_ROOT"
-    value = var.docker_volumes_root
+    name  = "DOCKER_APPDATA"
+    value = var.docker_appdata
+  }
+}
+
+data "local_file" "jellyfin" {
+  filename = "${path.module}/docker/jellyfin.yaml"
+}
+
+resource "portainer_stack" "jellyfin" {
+  name            = "jellyfin"
+  deployment_type = "standalone"
+  method          = "string"
+  endpoint_id     = portainer_environment.local.id
+
+  stack_file_content = data.local_file.jellyfin.content
+
+  env {
+    name  = "DOCKER_APPDATA"
+    value = var.docker_appdata
+  }
+
+  env {
+    name  = "ZFS_MEDIA"
+    value = var.zfs_media
+  }
+
+  env {
+    name  = "TZ"
+    value = var.timezone
   }
 }

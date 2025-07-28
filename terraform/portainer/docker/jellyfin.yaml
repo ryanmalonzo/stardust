@@ -1,0 +1,19 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.10.7
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.ryanmalonzo.com
+    volumes:
+      - ${DOCKER_APPDATA}/jellyfin:/config
+      - ${ZFS_MEDIA}/tvshows:/data/tvshows
+      - ${ZFS_MEDIA}/movies:/data/movies
+    ports:
+      - 8096:8096
+      # Discovery ports
+      - 7359:7359/udp
+      - 1900:1900/udp
+    restart: unless-stopped

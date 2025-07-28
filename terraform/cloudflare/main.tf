@@ -19,6 +19,11 @@ locals {
       name    = "vaultwarden.ryanmalonzo.com"
       type    = "CNAME"
       content = "ryanmalonzo.com"
+    },
+    {
+      name    = "jellyfin.ryanmalonzo.com"
+      type    = "CNAME"
+      content = "ryanmalonzo.com"
     }
   ]
 }
