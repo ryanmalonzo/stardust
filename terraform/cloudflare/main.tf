@@ -14,6 +14,11 @@ locals {
       name    = "portainer.ryanmalonzo.com"
       type    = "CNAME"
       content = "ryanmalonzo.com"
+    },
+    {
+      name    = "vaultwarden.ryanmalonzo.com"
+      type    = "CNAME"
+      content = "ryanmalonzo.com"
     }
   ]
 }
