@@ -1,0 +1,19 @@
+---
+- name: Ensure ZFS dataset exists
+  hosts: proxmox
+  become: true
+  vars:
+    zfs_dataset_name: "tank/media"
+    zfs_dataset_properties:
+      mountpoint: "/tank/media"
+  tasks:
+    - name: Ensure ZFS dataset is present
+      community.general.zfs:
+        name: "{{ zfs_dataset_name }}"
+        state: present
+        extra_zfs_properties: "{{ zfs_dataset_properties }}"
+      register: zfs_dataset
+
+    - name: Ensure ZFS dataset is present (idempotent)
+      debug:
+        msg: "ZFS dataset {{ zfs_dataset_name }} already exists or was created."

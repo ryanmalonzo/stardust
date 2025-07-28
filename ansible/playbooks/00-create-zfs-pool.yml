@@ -1,0 +1,25 @@
+---
+- name: Ensure ZFS pool exists
+  hosts: proxmox
+  become: true
+  vars:
+    zfs_pool_name: "tank"
+    zfs_pool_devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+  tasks:
+    - name: Check if ZFS pool exists
+      command: zpool list {{ zfs_pool_name }}
+      register: zpool_check
+      ignore_errors: true
+
+    - name: Create ZFS pool if it does not exist
+      command: "zpool create {{ zfs_pool_name }} {{ zfs_pool_devices | join(' ') }}"
+      when: zpool_check.rc != 0
+      args:
+        creates: "/dev/zvol/{{ zfs_pool_name }}"
+      register: zpool_create
+
+    - name: Ensure ZFS pool is present (idempotent)
+      debug:
+        msg: "ZFS pool {{ zfs_pool_name }} already exists or was created."
