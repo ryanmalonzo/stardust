@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   newt:
-    image: fosrl/newt
+    image: fosrl/newt:1.3.4
     container_name: newt
     volumes:
       - "socket-proxy:/run/proxy"
