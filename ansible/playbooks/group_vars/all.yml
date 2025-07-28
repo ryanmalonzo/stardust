@@ -6,3 +6,6 @@ docker_volumes_root: /opt/appdata
 
 proxmox_host_ip: "192.168.1.35"
 proxmox_subnet: "192.168.1.0/24"
+
+zfs_pool: "tank"
+zfs_dataset: "tank/media"

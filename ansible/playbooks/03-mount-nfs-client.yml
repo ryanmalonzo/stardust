@@ -4,7 +4,7 @@
   become: true
   vars:
     nfs_server_ip: "{{ proxmox_host_ip }}"
-    nfs_export_path: "/tank/media"
+    nfs_export_path: "/{{ zfs_dataset }}"
     nfs_mount_point: "/mnt/media"
     nfs_mount_opts: "defaults,_netdev"
   tasks:

@@ -3,7 +3,7 @@
   hosts: proxmox
   become: true
   vars:
-    zfs_pool_name: "tank"
+    zfs_pool_name: "{{ zfs_pool }}"
     zfs_pool_devices:
       - "/dev/sda"
       - "/dev/sdb"

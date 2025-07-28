@@ -3,9 +3,9 @@
   hosts: proxmox
   become: true
   vars:
-    zfs_dataset_name: "tank/media"
+    zfs_dataset_name: "{{ zfs_dataset }}"
     zfs_dataset_properties:
-      mountpoint: "/tank/media"
+      mountpoint: "/{{ zfs_dataset }}"
   tasks:
     - name: Ensure ZFS dataset is present
       community.general.zfs:
