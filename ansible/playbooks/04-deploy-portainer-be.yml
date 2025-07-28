@@ -18,11 +18,11 @@
 
     - name: Template Portainer BE Docker Compose file
       ansible.builtin.template:
-        src: ../docker/portainer-compose.yaml
+        src: ../docker/portainer.yaml
         dest: "{{ dest_compose_path }}"
         owner: stardust
         group: stardust
-        mode: "0644"
+        mode: "0600"
 
     - name: Deploy Portainer BE with Docker Compose v2
       community.docker.docker_compose_v2:

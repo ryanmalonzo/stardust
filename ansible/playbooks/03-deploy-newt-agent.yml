@@ -22,7 +22,7 @@
         dest: "{{ dest_compose_path }}"
         owner: stardust
         group: stardust
-        mode: "0644"
+        mode: "0600"
 
     - name: Deploy Newt agent with Docker Compose v2
       community.docker.docker_compose_v2:
@@ -30,5 +30,3 @@
         files:
           - compose.yaml
         state: present
-      become: true
-      become_user: stardust

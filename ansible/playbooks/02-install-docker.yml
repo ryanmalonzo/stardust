@@ -10,6 +10,18 @@
     docker_users:
       - stardust
 
+- name: Ensure Docker volumes root directory exists on docker VM
+  hosts: docker
+  remote_user: stardust
+  tasks:
+    - name: Create Docker volumes root directory
+      ansible.builtin.file:
+        path: "{{ docker_volumes_root }}"
+        state: directory
+        mode: "0755"
+        owner: stardust
+        group: stardust
+
 - name: Install Docker on pangolin VM
   hosts: pangolin
   become: true

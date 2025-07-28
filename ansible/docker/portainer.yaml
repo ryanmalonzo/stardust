@@ -12,7 +12,7 @@ services:
     image: "portainer/portainer-ee:lts"
     container_name: portainer
     volumes:
-      - "portainer_data:/data"
+      - "{{ docker_volumes_root }}/portainer:/data"
       - "socket-proxy:/var/run"
     ports:
       - "9443:9443"
