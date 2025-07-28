@@ -10,13 +10,6 @@ data "proxmox_virtual_environment_datastores" "terraform" {
   }
 }
 
-data "proxmox_virtual_environment_datastores" "zfs" {
-  node_name = var.proxmox_node_name
-  filters = {
-    id = "tank"
-  }
-}
-
 resource "proxmox_virtual_environment_download_file" "debian_12_genericcloud" {
   content_type = "import"
   datastore_id = data.proxmox_virtual_environment_datastores.terraform.datastores[0].id
@@ -58,12 +51,12 @@ resource "proxmox_virtual_environment_vm" "docker_vm" {
   }
 
   disk {
-    datastore_id = data.proxmox_virtual_environment_datastores.zfs.datastores[0].id
+    datastore_id = "local-lvm"
     import_from  = proxmox_virtual_environment_download_file.debian_12_genericcloud.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 1024
+    size         = 50
   }
 
   initialization {
