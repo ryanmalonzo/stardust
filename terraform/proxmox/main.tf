@@ -38,6 +38,8 @@ resource "proxmox_virtual_environment_vm" "docker_vm" {
   name      = "docker"
   node_name = var.proxmox_node_name
 
+  machine = "q35"
+
   agent {
     enabled = true
   }
