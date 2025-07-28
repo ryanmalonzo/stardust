@@ -1,51 +1,124 @@
-# stardust
+# Stardust
 
-## Deployment Workflow
+A semi-automated personal homelab infrastructure setup using Terraform for infrastructure deployment and Docker services (Portainer), and Ansible for system configuration. This project orchestrates the deployment of a Proxmox-based homelab with containerized services and cloud integration.
 
-Here’s the recommended deployment workflow for this project, with each step marked as automated (via Ansible, Terraform, or Makefile) or manual. This should help you understand what’s hands-off and what still needs a human touch.
+## Environment Variables
 
-1. **Install Proxmox** _(manual)_
-   - Install Proxmox VE on your hardware. This can’t be automated from outside.
-2. **Create ZFS pool with 2 HDDs** _(automated: Ansible/Makefile)_
-   - Run `make zfs-pool` to ensure the ZFS pool exists.
-3. **Create ZFS dataset `tank/media`** _(automated: Ansible/Makefile)_
-   - Run `make zfs-dataset` to ensure the dataset exists.
-4. **Install NFS server on Proxmox host** _(automated: Ansible/Makefile)_
-   - Run `make nfs-server`.
-5. **Add NFS server to Proxmox via Web UI** _(manual)_
-   - Use the Proxmox web UI to add the NFS storage backend.
-6. **Install NFS client and mount it to Docker VM** _(automated: Ansible/Makefile)_
-   - Run `make nfs-client`.
-7. **Distribute SSH key to Proxmox host** _(automated: Ansible/Makefile)_
-   - Run `make ssh-key` to push your SSH key using initial credentials.
-8. **Create Debian VM to run Docker services (“the Docker VM”)** _(automated: Terraform)_
-   - Use the Terraform configuration in `terraform/proxmox`.
-9. **Add SSH key to Docker host** _(automated: Terraform)_
-   - Handled by cloud-init in Terraform.
-10. **Purchase Cloud VPS to run Pangolin on** _(manual)_
-    - Buy a VPS from your provider of choice.
-11. **Add SSH key to Pangolin host root user** _(automated: Ansible/Makefile)_
-    - Run `make ssh-key` with the right inventory/host.
-12. **Add SSH key to Pangolin host stardust user** _(automated: Ansible/Makefile)_
-    - Run `make ssh-key` with the right inventory/host.
-13. **Install Docker on Docker and Pangolin VMs** _(automated: Ansible/Makefile)_
-    - Run `make docker`.
-14. **Deploy Newt agent on Pangolin VM** _(automated: Ansible/Makefile)_
-    - Run `make newt`.
-15. **Deploy Portainer on Docker VM** _(automated: Ansible/Makefile)_
-    - Run `make portainer`.
-16. **Deploy stacks via Portainer** _(automated: Terraform)_
-    - Use the Terraform configuration in `terraform/portainer`.
-17. **Cloudflare DNS records** _(automated: Terraform)_
-    - Use the Terraform configuration in `terraform/cloudflare`.
-18. **Tunnels via Pangolin Web UI** _(manual)_
-    - Add tunnels using the Pangolin web UI (no API or Terraform provider as of now).
+The following environment variables need to be configured before running the deployment steps. You can set these in a `.envrc` file or export them in your shell:
 
----
+| Variable                      | Description                             | Example                         |
+| ----------------------------- | --------------------------------------- | ------------------------------- |
+| `CLOUDFLARE_API_TOKEN`        | Cloudflare API token for DNS management | `your_cloudflare_token`         |
+| `NEWT_ID`                     | Newt service identifier                 | `your_newt_id`                  |
+| `NEWT_SECRET`                 | Newt service secret key                 | `your_newt_secret`              |
+| `PANGOLIN_IP`                 | IP address of the Pangolin VPS          | `217.154.121.137`               |
+| `PORTAINER_ENDPOINT`          | Portainer web interface URL             | `https://portainer.example.com` |
+| `PORTAINER_API_KEY`           | Portainer API key for automation        | `ptr_your_api_key`              |
+| `PROXMOX_VE_ENDPOINT_URL`     | Proxmox VE web interface URL            | `https://192.168.1.35:8006/`    |
+| `PROXMOX_VE_USERNAME`         | Proxmox VE username                     | `root@pam`                      |
+| `PROXMOX_VE_PASSWORD`         | Proxmox VE password                     | `your_password`                 |
+| `TF_VAR_pangolin_ip`          | Terraform variable for Pangolin IP      | `$PANGOLIN_IP`                  |
+| `TF_VAR_proxmox_endpoint_url` | Terraform variable for Proxmox URL      | `$PROXMOX_VE_ENDPOINT_URL`      |
 
-### Notes
+## Deployment Steps
 
-- All Ansible playbooks are in `ansible/playbooks/` and can be run via the Makefile.
-- SSH key distribution is idempotent and can be run multiple times safely.
-- ZFS pool and dataset creation are also idempotent and will not change anything if already set up.
-- For any manual steps, see the Proxmox or Pangolin documentation for details.
+> **Note**: SSH keys must be added manually to all hosts before running automated steps.
+
+### 1. Install Proxmox VE
+
+Install Proxmox VE on the hardware (manual step)
+
+### 2. Create ZFS Pool
+
+Create ZFS pool with two HDDs using Ansible:
+
+```bash
+make zfs-pool
+```
+
+### 3. Create ZFS Dataset
+
+Create ZFS dataset `tank/media` using Ansible:
+
+```bash
+make zfs-dataset
+```
+
+### 4. Install NFS Server
+
+Install NFS server on the Proxmox host using Ansible:
+
+```bash
+make nfs-server
+```
+
+### 5. Configure NFS in Proxmox
+
+Add NFS server to Proxmox via the web UI (manual step)
+
+### 6. Mount NFS Client
+
+Install NFS client and mount it to the Docker VM using Ansible:
+
+```bash
+make nfs-client
+```
+
+### 7. Create Docker VM
+
+Create Debian VM for Docker services using Terraform:
+
+```bash
+cd terraform/proxmox
+terraform apply
+```
+
+### 8. Setup Cloud VPS
+
+Purchase and configure cloud VPS for Pangolin (manual step)
+
+### 9. Install Docker
+
+Install Docker on both Docker and Pangolin VMs using Ansible:
+
+```bash
+make docker
+```
+
+### 10. Deploy Newt Agent
+
+Deploy Newt agent on the Pangolin VM using Ansible:
+
+```bash
+make newt
+```
+
+### 11. Deploy Portainer
+
+Deploy Portainer on the Docker VM using Ansible:
+
+```bash
+make portainer
+```
+
+### 12. Deploy Application Stacks
+
+Deploy stacks via Portainer using Terraform:
+
+```bash
+cd terraform/portainer
+terraform apply
+```
+
+### 13. Configure DNS
+
+Manage Cloudflare DNS records using Terraform:
+
+```bash
+cd terraform/cloudflare
+terraform apply
+```
+
+### 14. Setup Tunnels
+
+Add tunnels via the Pangolin web UI (manual step)
