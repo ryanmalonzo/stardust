@@ -1,0 +1,25 @@
+---
+- name: Set up NFS server for ZFS dataset
+  hosts: proxmox
+  become: true
+  vars:
+    nfs_exports:
+      - "/tank/media 192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)"
+
+  pre_tasks:
+    - name: Check if ZFS dataset tank/media exists
+      command: zfs list -H -o name tank/media
+      register: zfs_dataset_check
+      failed_when: false
+      changed_when: false
+
+    - name: Create ZFS dataset tank/media with mountpoint if missing
+      community.general.zfs:
+        name: tank/media
+        state: present
+        extra_zfs_properties:
+          mountpoint: /tank/media
+      when: zfs_dataset_check.rc != 0
+
+  roles:
+    - geerlingguy.nfs

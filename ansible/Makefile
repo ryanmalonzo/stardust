@@ -1,5 +1,8 @@
 .PHONY: install bootstrap docker newt
 
+nfs:
+	ansible-playbook playbooks/00-install-nfs-server.yml
+
 bootstrap:
 	ansible-playbook playbooks/01-bootstrap-pangolin.yml
 

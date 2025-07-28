@@ -1,6 +1,9 @@
 roles:
   - src: geerlingguy.docker
     version: "7.4.7"
+  - src: geerlingguy.nfs
+    version: "2.1.0"
 
 collections:
+  - name: community.general
   - name: devsec.hardening
