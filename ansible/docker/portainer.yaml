@@ -1,25 +1,11 @@
 services:
-  socket-proxy:
-    image: "11notes/socket-proxy:2.1.3"
-    read_only: true
-    user: "0:994"
-    volumes:
-      - "/run/docker.sock:/run/docker.sock:ro"
-      - "socket-proxy:/run/proxy"
-    restart: unless-stopped
-
   portainer-ee:
     image: "portainer/portainer-ee:lts"
     container_name: portainer
     volumes:
       - "{{ docker_volumes_root }}/portainer:/data"
-      - "socket-proxy:/var/run"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
       - "9443:9443"
       - "8000:8000"
-    depends_on:
-      - socket-proxy
     restart: unless-stopped
-
-volumes:
-  socket-proxy:
