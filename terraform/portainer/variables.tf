@@ -18,7 +18,7 @@ variable "timezone" {
   default = "Europe/Paris"
 }
 
-variable "zfs_media" {
+variable "nfs_media" {
   type    = string
   default = "/mnt/media"
 }

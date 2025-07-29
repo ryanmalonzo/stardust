@@ -1,4 +1,4 @@
-.PHONY: install zfs-pool zfs-dataset nfs-server nfs-client bootstrap docker newt portainer help
+.PHONY: install zfs-pool zfs-dataset nfs-server media-dirs nfs-client bootstrap docker newt portainer help
 
 zfs-pool:
 	ansible-playbook playbooks/00-create-zfs-pool.yml
@@ -9,20 +9,23 @@ zfs-dataset:
 nfs-server:
 	ansible-playbook playbooks/02-install-nfs-server.yml
 
+media-dirs:
+	ansible-playbook playbooks/03-create-media-dirs.yml
+
 nfs-client:
-	ansible-playbook playbooks/03-mount-nfs-client.yml
+	ansible-playbook playbooks/04-mount-nfs-client.yml
 
 bootstrap:
-	ansible-playbook playbooks/04-bootstrap-pangolin.yml
+	ansible-playbook playbooks/05-bootstrap-pangolin.yml
 
 docker:
-	ansible-playbook playbooks/05-install-docker.yml
+	ansible-playbook playbooks/06-install-docker.yml
 
 newt:
-	ansible-playbook playbooks/06-deploy-newt-agent.yml
+	ansible-playbook playbooks/07-deploy-newt-agent.yml
 
 portainer:
-	ansible-playbook playbooks/07-deploy-portainer-be.yml
+	ansible-playbook playbooks/08-deploy-portainer-be.yml
 
 install:
 	ansible-galaxy install -r requirements.yml
@@ -32,6 +35,7 @@ help:
 	@echo "  zfs-pool     - Create the ZFS pool on Proxmox host"
 	@echo "  zfs-dataset  - Create the ZFS dataset on Proxmox host"
 	@echo "  nfs-server   - Install and configure NFS server on Proxmox host"
+	@echo "  media-dirs   - Create media directories for anime/non-anime separation"
 	@echo "  nfs-client   - Mount NFS share on Docker VM"
 	@echo "  bootstrap    - Bootstrap the Pangolin VM (user, SSH, sudo)"
 	@echo "  docker       - Install Docker on Docker and Pangolin VMs"

@@ -9,8 +9,10 @@ services:
       - 1900:1900/udp
     volumes:
       - ${DOCKER_APPDATA}/jellyfin:/config
-      - ${ZFS_MEDIA}/tvshows:/data/tvshows
-      - ${ZFS_MEDIA}/movies:/data/movies
+      - ${NFS_MEDIA}/anime/tv:/data/anime/tv
+      - ${NFS_MEDIA}/anime/movies:/data/anime/movies
+      - ${NFS_MEDIA}/non-anime/tv:/data/non-anime/tv
+      - ${NFS_MEDIA}/non-anime/movies:/data/non-anime/movies
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -27,8 +29,8 @@ services:
       - "7878:7878"
     volumes:
       - ${DOCKER_APPDATA}/radarr:/config
-      - ${ZFS_MEDIA}/movies:/movies
-      - ${ZFS_MEDIA}/downloads:/downloads
+      - ${NFS_MEDIA}/movies:/movies
+      - ${NFS_MEDIA}/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -42,8 +44,8 @@ services:
       - "8989:8989"
     volumes:
       - ${DOCKER_APPDATA}/sonarr:/config
-      - ${ZFS_MEDIA}/tvshows:/tv
-      - ${ZFS_MEDIA}/downloads:/downloads
+      - ${NFS_MEDIA}/tvshows:/tv
+      - ${NFS_MEDIA}/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -81,10 +83,51 @@ services:
       - "8080:8080"
     volumes:
       - ${DOCKER_APPDATA}/sabnzbd:/config
-      - ${ZFS_MEDIA}/incomplete-downloads:/incomplete-downloads
-      - ${ZFS_MEDIA}/downloads:/downloads
+      - ${NFS_MEDIA}/incomplete-downloads:/incomplete-downloads
+      - ${NFS_MEDIA}/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  radarr-nonanime:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr-nonanime
+    ports:
+      - "7879:7878"
+    volumes:
+      - ${DOCKER_APPDATA}/radarr-nonanime:/config
+      - ${NFS_MEDIA}/non-anime/movies:/movies
+      - ${NFS_MEDIA}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  sonarr-nonanime:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr-nonanime
+    ports:
+      - "8990:8989"
+    volumes:
+      - ${DOCKER_APPDATA}/sonarr-nonanime:/config
+      - ${NFS_MEDIA}/non-anime/tv:/tv
+      - ${NFS_MEDIA}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  profilarr-nonanime:
+    image: santiagosayshey/profilarr:v1.0.1
+    container_name: profilarr-nonanime
+    ports:
+      - "6869:6868"
+    volumes:
+      - ${DOCKER_APPDATA}/profilarr-nonanime:/config
+    environment:
       - TZ=${TZ}
     restart: unless-stopped

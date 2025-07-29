@@ -71,8 +71,8 @@ resource "portainer_stack" "jellyfin" {
   }
 
   env {
-    name  = "ZFS_MEDIA"
-    value = var.zfs_media
+    name  = "NFS_MEDIA"
+    value = var.nfs_media
   }
 
   env {
