@@ -22,7 +22,7 @@ newt:
 	ansible-playbook playbooks/06-deploy-newt-agent.yml
 
 portainer:
-	ansible-playbook playbooks/07-deploy-portainer.yml
+	ansible-playbook playbooks/07-deploy-portainer-be.yml
 
 install:
 	ansible-galaxy install -r requirements.yml
