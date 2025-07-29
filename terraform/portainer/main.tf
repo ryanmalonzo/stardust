@@ -79,4 +79,14 @@ resource "portainer_stack" "jellyfin" {
     name  = "TZ"
     value = var.timezone
   }
+
+  env {
+    name  = "PUID"
+    value = var.puid
+  }
+
+  env {
+    name  = "PGID"
+    value = var.pgid
+  }
 }

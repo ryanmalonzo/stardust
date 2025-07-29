@@ -1,31 +1,33 @@
 locals {
-  dns_records = [
-    {
-      name    = "ryanmalonzo.com"
-      type    = "A"
-      content = var.pangolin_ip
-    },
-    {
-      name    = "pangolin.ryanmalonzo.com"
-      type    = "CNAME"
-      content = "ryanmalonzo.com"
-    },
-    {
-      name    = "portainer.ryanmalonzo.com"
-      type    = "CNAME"
-      content = "ryanmalonzo.com"
-    },
-    {
-      name    = "vaultwarden.ryanmalonzo.com"
-      type    = "CNAME"
-      content = "ryanmalonzo.com"
-    },
-    {
-      name    = "jellyfin.ryanmalonzo.com"
-      type    = "CNAME"
-      content = "ryanmalonzo.com"
-    }
+  root_domain = "ryanmalonzo.com"
+  cname_subdomains = [
+    "pangolin",
+    "portainer",
+    "vaultwarden",
+    "jellyfin",
+    "radarr",
+    "sonarr",
+    "prowlarr",
+    "sabnzbd",
+    "profilarr"
   ]
+
+  dns_records = concat(
+    [
+      {
+        name    = local.root_domain
+        type    = "A"
+        content = var.pangolin_ip
+      }
+    ],
+    [
+      for sub in local.cname_subdomains : {
+        name    = "${sub}.${local.root_domain}"
+        type    = "CNAME"
+        content = local.root_domain
+      }
+    ]
+  )
 }
 
 resource "cloudflare_dns_record" "dns_records" {
@@ -38,3 +40,4 @@ resource "cloudflare_dns_record" "dns_records" {
   ttl     = 1
   proxied = false
 }
+
