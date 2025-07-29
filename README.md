@@ -87,7 +87,7 @@ make docker
 
 ### 10. Deploy Newt Agent
 
-Deploy Newt agent on the Pangolin VM using Ansible:
+Deploy Newt agent on the Docker VM using Ansible:
 
 ```bash
 make newt
