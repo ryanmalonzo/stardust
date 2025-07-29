@@ -23,6 +23,8 @@ The following environment variables need to be configured before running the dep
 ## Deployment Steps
 
 > **Note**: SSH keys must be added manually to all hosts before running automated steps.
+>
+> **Note**: Static IP leases must be configured in your DHCP server for the Proxmox host and each VM to ensure consistent network addressing.
 
 ### 1. Install Proxmox VE
 
