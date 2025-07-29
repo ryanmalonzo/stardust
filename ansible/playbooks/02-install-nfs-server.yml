@@ -4,7 +4,7 @@
   become: true
   vars:
     nfs_exports:
-      - "/{{ zfs_dataset }} {{ proxmox_subnet }}(rw,sync,no_subtree_check,no_root_squash)"
+      - "/{{ zfs_dataset }} {{ proxmox_subnet }}(rw,sync,no_subtree_check,all_squash,anonuid=1000,anongid=1000)"
 
   pre_tasks:
     - name: Check if ZFS dataset {{ zfs_dataset }} exists
@@ -20,6 +20,13 @@
         extra_zfs_properties:
           mountpoint: "/{{ zfs_dataset }}"
       when: zfs_dataset_check.rc != 0
+
+    - name: Ensure exported directory is owned by UID/GID 1000
+      ansible.builtin.file:
+        path: "/{{ zfs_dataset }}"
+        owner: 1000
+        group: 1000
+        recurse: true
 
   roles:
     - geerlingguy.nfs

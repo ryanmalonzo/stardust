@@ -24,8 +24,8 @@
       ansible.builtin.file:
         path: "{{ nfs_mount_point }}"
         state: directory
-        owner: root
-        group: root
+        owner: 1000
+        group: 1000
         mode: "0755"
 
     - name: Mount NFS share and ensure persistence
