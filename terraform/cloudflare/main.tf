@@ -12,7 +12,8 @@ locals {
     "profilarr",
     "sonarr-nonanime",
     "radarr-nonanime",
-    "profilarr-nonanime"
+    "profilarr-nonanime",
+    "jellyseerr"
   ]
 
   dns_records = concat(

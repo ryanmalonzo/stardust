@@ -22,45 +22,23 @@ services:
       - /dev/dri:/dev/dri
     restart: unless-stopped
 
-  radarr:
-    image: lscr.io/linuxserver/radarr:5.26.2
-    container_name: radarr
+  jellyseerr:
+    image: fallenbagel/jellyseerr:2.7.2
+    container_name: jellyseerr
     ports:
-      - "7878:7878"
+      - "5055:5055"
     volumes:
-      - ${DOCKER_APPDATA}/radarr:/config
-      - ${NFS_MEDIA}/movies:/movies
-      - ${NFS_MEDIA}/downloads:/downloads
+      - ${DOCKER_APPDATA}/jellyseerr:/app/config
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - LOG_LEVEL=debug
       - TZ=${TZ}
-    restart: unless-stopped
-
-  sonarr:
-    image: lscr.io/linuxserver/sonarr:4.0.15
-    container_name: sonarr
-    ports:
-      - "8989:8989"
-    volumes:
-      - ${DOCKER_APPDATA}/sonarr:/config
-      - ${NFS_MEDIA}/tvshows:/tv
-      - ${NFS_MEDIA}/downloads:/downloads
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    restart: unless-stopped
-
-  profilarr:
-    image: santiagosayshey/profilarr:v1.0.1
-    container_name: profilarr
-    ports:
-      - "6868:6868"
-    volumes:
-      - ${DOCKER_APPDATA}/profilarr:/config
-    environment:
-      - TZ=${TZ}
+      - PORT=5055
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
     restart: unless-stopped
 
   prowlarr:
@@ -88,6 +66,47 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:5.26.2
+    container_name: radarr
+    ports:
+      - "7878:7878"
+    volumes:
+      - ${DOCKER_APPDATA}/radarr:/config
+      - ${NFS_MEDIA}/anime/movies:/movies
+      - ${NFS_MEDIA}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:4.0.15
+    container_name: sonarr
+    ports:
+      - "8989:8989"
+    volumes:
+      - ${DOCKER_APPDATA}/sonarr:/config
+      - ${NFS_MEDIA}/anime/tv:/tv
+      - ${NFS_MEDIA}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  profilarr:
+    image: santiagosayshey/profilarr:v1.0.1
+    container_name: profilarr
+    ports:
+      - "6868:6868"
+    volumes:
+      - ${DOCKER_APPDATA}/profilarr:/config
+    environment:
       - TZ=${TZ}
     restart: unless-stopped
 
