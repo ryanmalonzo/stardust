@@ -16,7 +16,7 @@
   tasks:
     - name: Create Docker volumes root directory
       ansible.builtin.file:
-        path: "{{ docker_volumes_root }}"
+        path: "{{ docker_appdata }}"
         state: directory
         mode: "0755"
         owner: stardust

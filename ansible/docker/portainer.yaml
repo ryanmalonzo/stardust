@@ -3,7 +3,7 @@ services:
     image: "portainer/portainer-ee:lts"
     container_name: portainer
     volumes:
-      - "{{ docker_volumes_root }}/portainer:/data"
+      - "{{ docker_appdata }}/portainer:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
       - "9443:9443"
