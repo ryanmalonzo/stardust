@@ -16,4 +16,6 @@ services:
       # Discovery ports
       - 7359:7359/udp
       - 1900:1900/udp
+    devices:
+      - /dev/dri:/dev/dri
     restart: unless-stopped
