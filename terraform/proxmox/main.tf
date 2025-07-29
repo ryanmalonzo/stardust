@@ -85,7 +85,17 @@ resource "proxmox_virtual_environment_vm" "docker" {
   serial_device {
     device = "socket"
   }
+
   vga {
     type = "serial0"
+  }
+
+  # GPU passthrough
+  hostpci {
+    device = "hostpci0"
+    id     = var.gpu_pci_id
+    pcie   = true
+    rombar = true
+    xvga   = false
   }
 }

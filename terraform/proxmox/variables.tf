@@ -11,3 +11,8 @@ variable "timezone" {
   type    = string
   default = "Europe/Paris"
 }
+
+variable "gpu_pci_id" {
+  type    = string
+  default = "0000:00:02"
+}
