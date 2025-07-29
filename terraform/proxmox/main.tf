@@ -17,7 +17,14 @@ resource "proxmox_virtual_environment_download_file" "debian_12_genericcloud" {
   url          = "https://cdimage.debian.org/cdimage/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
 }
 
-resource "proxmox_virtual_environment_file" "docker_cloud_init" {
+resource "proxmox_virtual_environment_download_file" "debian_12_generic" {
+  content_type = "import"
+  datastore_id = data.proxmox_virtual_environment_datastores.terraform.datastores[0].id
+  node_name    = "pve"
+  url          = "https://cdimage.debian.org/cdimage/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
+}
+
+resource "proxmox_virtual_environment_file" "cloud_init" {
   content_type = "snippets"
   datastore_id = data.proxmox_virtual_environment_datastores.terraform.datastores[0].id
   node_name    = var.proxmox_node_name
@@ -34,7 +41,7 @@ resource "proxmox_virtual_environment_file" "docker_cloud_init" {
   }
 }
 
-resource "proxmox_virtual_environment_vm" "docker_vm" {
+resource "proxmox_virtual_environment_vm" "docker" {
   name      = "docker"
   node_name = var.proxmox_node_name
 
@@ -54,7 +61,7 @@ resource "proxmox_virtual_environment_vm" "docker_vm" {
 
   disk {
     datastore_id = "local-lvm"
-    import_from  = proxmox_virtual_environment_download_file.debian_12_genericcloud.id
+    import_from  = proxmox_virtual_environment_download_file.debian_12_generic.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -68,7 +75,7 @@ resource "proxmox_virtual_environment_vm" "docker_vm" {
       }
     }
 
-    user_data_file_id = proxmox_virtual_environment_file.docker_cloud_init.id
+    user_data_file_id = proxmox_virtual_environment_file.cloud_init.id
   }
 
   network_device {
