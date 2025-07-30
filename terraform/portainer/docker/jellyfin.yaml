@@ -61,12 +61,30 @@ services:
       - "8080:8080"
     volumes:
       - ${DOCKER_APPDATA}/sabnzbd:/config
-      - ${NFS_MEDIA}/incomplete-downloads:/incomplete-downloads
-      - ${NFS_MEDIA}/downloads:/downloads
+      - /opt/incomplete-downloads:/incomplete-downloads
+      - /opt/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:5.1.2
+    container_name: qbittorrent
+    ports:
+      - "8081:8081"
+      - "6881:6881"
+      - "6881:6881/udp"
+    volumes:
+      - ${DOCKER_APPDATA}/qbittorrent:/config
+      - /opt/torrent-downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8081
+      - TORRENTING_PORT=6881
     restart: unless-stopped
 
   radarr:
