@@ -89,4 +89,14 @@ resource "portainer_stack" "jellyfin" {
     name  = "PGID"
     value = var.pgid
   }
+
+  env {
+    name  = "INCOMPLETE_DOWNLOADS_DIR"
+    value = var.incomplete_downloads_dir
+  }
+
+  env {
+    name  = "DOWNLOADS_DIR"
+    value = var.downloads_dir
+  }
 }

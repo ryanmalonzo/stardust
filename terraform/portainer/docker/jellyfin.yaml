@@ -61,8 +61,8 @@ services:
       - "8080:8080"
     volumes:
       - ${DOCKER_APPDATA}/sabnzbd:/config
-      - /opt/incomplete-downloads:/incomplete-downloads
-      - /opt/downloads:/downloads
+      - ${INCOMPLETE_DOWNLOADS_DIR}:/incomplete-downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -78,7 +78,7 @@ services:
       - "6881:6881/udp"
     volumes:
       - ${DOCKER_APPDATA}/qbittorrent:/config
-      - /opt/torrent-downloads:/downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -95,7 +95,7 @@ services:
     volumes:
       - ${DOCKER_APPDATA}/radarr:/config
       - ${NFS_MEDIA}/anime/movies:/movies
-      - ${NFS_MEDIA}/downloads:/downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -110,7 +110,7 @@ services:
     volumes:
       - ${DOCKER_APPDATA}/sonarr:/config
       - ${NFS_MEDIA}/anime/tv:/tv
-      - ${NFS_MEDIA}/downloads:/downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -136,7 +136,7 @@ services:
     volumes:
       - ${DOCKER_APPDATA}/radarr-nonanime:/config
       - ${NFS_MEDIA}/non-anime/movies:/movies
-      - ${NFS_MEDIA}/downloads:/downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -151,7 +151,7 @@ services:
     volumes:
       - ${DOCKER_APPDATA}/sonarr-nonanime:/config
       - ${NFS_MEDIA}/non-anime/tv:/tv
-      - ${NFS_MEDIA}/downloads:/downloads
+      - ${DOWNLOADS_DIR}:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

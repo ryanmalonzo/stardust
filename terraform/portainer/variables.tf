@@ -22,3 +22,13 @@ variable "nfs_media" {
   type    = string
   default = "/mnt/media"
 }
+
+variable "incomplete_downloads_dir" {
+  type    = string
+  default = "/opt/incomplete-downloads"
+}
+
+variable "downloads_dir" {
+  type    = string
+  default = "/opt/downloads"
+}
