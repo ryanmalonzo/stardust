@@ -65,7 +65,7 @@ resource "proxmox_virtual_environment_vm" "docker" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 50
+    size         = 128
   }
 
   initialization {
