@@ -2,31 +2,20 @@
 - name: Set up NFS server for ZFS dataset
   hosts: proxmox
   become: true
-  vars:
-    nfs_exports:
-      - "/{{ zfs_dataset }} {{ proxmox_subnet }}(rw,sync,no_subtree_check,all_squash,anonuid=1000,anongid=1000)"
 
   pre_tasks:
-    - name: Check if ZFS dataset {{ zfs_dataset }} exists
-      command: zfs list -H -o name "{{ zfs_dataset }}"
-      register: zfs_dataset_check
-      failed_when: false
-      changed_when: false
-
-    - name: Create ZFS dataset {{ zfs_dataset }} with mountpoint if missing
-      community.general.zfs:
-        name: "{{ zfs_dataset }}"
-        state: present
-        extra_zfs_properties:
-          mountpoint: "/{{ zfs_dataset }}"
-      when: zfs_dataset_check.rc != 0
-
-    - name: Ensure exported directory is owned by UID/GID 1000
+    - name: Ensure exported directories are owned by UID/GID 1000
       ansible.builtin.file:
-        path: "/{{ zfs_dataset }}"
+        path: "/{{ zfs_pool }}/{{ item }}"
         owner: 1000
         group: 1000
         recurse: true
+      loop: "{{ zfs_datasets }}"
+
+    - name: Build NFS exports list
+      set_fact:
+        nfs_exports: >-
+          {{ zfs_datasets | map('regex_replace', '^(.*)$', '/' ~ zfs_pool ~ '/\1 ' ~ proxmox_subnet ~ '(rw,sync,no_subtree_check,all_squash,anonuid=1000,anongid=1000)') | list }}
 
   roles:
     - geerlingguy.nfs

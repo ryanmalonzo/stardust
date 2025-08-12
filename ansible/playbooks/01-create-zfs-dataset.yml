@@ -1,19 +1,18 @@
 ---
-- name: Ensure ZFS dataset exists
+- name: Ensure ZFS datasets for all shares exist
   hosts: proxmox
   become: true
-  vars:
-    zfs_dataset_name: "{{ zfs_dataset }}"
-    zfs_dataset_properties:
-      mountpoint: "/{{ zfs_dataset }}"
   tasks:
-    - name: Ensure ZFS dataset is present
+    - name: Ensure ZFS dataset for each share is present
       community.general.zfs:
-        name: "{{ zfs_dataset_name }}"
+        name: "{{ zfs_pool }}/{{ item }}"
         state: present
-        extra_zfs_properties: "{{ zfs_dataset_properties }}"
-      register: zfs_dataset
+        extra_zfs_properties:
+          mountpoint: "/{{ zfs_pool }}/{{ item }}"
+      loop: "{{ zfs_datasets }}"
+      register: zfs_datasets
 
-    - name: Ensure ZFS dataset is present (idempotent)
+    - name: Ensure ZFS datasets are present (idempotent)
       debug:
-        msg: "ZFS dataset {{ zfs_dataset_name }} already exists or was created."
+        msg: "ZFS dataset {{ zfs_pool }}/{{ item.item }} already exists or was created."
+      loop: "{{ zfs_datasets.results }}"

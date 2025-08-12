@@ -1,35 +1,44 @@
 ---
-- name: Ensure media directories for anime and non-anime exist
+- name: Ensure base and media subdirectories exist
   hosts: proxmox
   become: true
   tasks:
-    - name: Create anime/tv directory
+    - name: Create base directory for each share
       ansible.builtin.file:
-        path: "/tank/media/anime/tv"
+        path: "/{{ zfs_pool }}/{{ item }}"
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: "0775"
+      loop: "{{ zfs_datasets }}"
+
+    - name: Create anime/tv directory (media only)
+      ansible.builtin.file:
+        path: "/{{ zfs_pool }}/media/anime/tv"
         state: directory
         owner: 1000
         group: 1000
         mode: "0775"
 
-    - name: Create anime/movies directory
+    - name: Create anime/movies directory (media only)
       ansible.builtin.file:
-        path: "/tank/media/anime/movies"
+        path: "/{{ zfs_pool }}/media/anime/movies"
         state: directory
         owner: 1000
         group: 1000
         mode: "0775"
 
-    - name: Create non-anime/tv directory
+    - name: Create non-anime/tv directory (media only)
       ansible.builtin.file:
-        path: "/tank/media/non-anime/tv"
+        path: "/{{ zfs_pool }}/media/non-anime/tv"
         state: directory
         owner: 1000
         group: 1000
         mode: "0775"
 
-    - name: Create non-anime/movies directory
+    - name: Create non-anime/movies directory (media only)
       ansible.builtin.file:
-        path: "/tank/media/non-anime/movies"
+        path: "/{{ zfs_pool }}/media/non-anime/movies"
         state: directory
         owner: 1000
         group: 1000
