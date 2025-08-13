@@ -1,6 +1,13 @@
+# Common
+
 variable "docker_appdata" {
   type    = string
   default = "/opt/appdata"
+}
+
+variable "timezone" {
+  type    = string
+  default = "Europe/Paris"
 }
 
 variable "puid" {
@@ -13,11 +20,6 @@ variable "pgid" {
   default = "1000"
 }
 
-variable "timezone" {
-  type    = string
-  default = "Europe/Paris"
-}
-
 variable "nfs_media" {
   type    = string
   default = "/mnt/media"
@@ -28,6 +30,8 @@ variable "nfs_photos" {
   default = "/mnt/photos"
 }
 
+# Jellyfin
+
 variable "incomplete_downloads_dir" {
   type    = string
   default = "/opt/incomplete-downloads"
@@ -37,6 +41,8 @@ variable "downloads_dir" {
   type    = string
   default = "/opt/downloads"
 }
+
+# Immich
 
 variable "immich_db_password" {
   type      = string
