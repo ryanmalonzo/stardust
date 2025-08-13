@@ -20,6 +20,11 @@ variable "pgid" {
   default = "1000"
 }
 
+variable "nfs_files" {
+  type    = string
+  default = "/mnt/files"
+}
+
 variable "nfs_media" {
   type    = string
   default = "/mnt/media"
@@ -45,6 +50,13 @@ variable "downloads_dir" {
 # Immich
 
 variable "immich_db_password" {
+  type      = string
+  sensitive = true
+}
+
+# Nextcloud
+
+variable "nextcloud_db_password" {
   type      = string
   sensitive = true
 }

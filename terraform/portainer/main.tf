@@ -60,3 +60,18 @@ module "immich" {
     UPLOAD_LOCATION  = var.nfs_photos
   }
 }
+
+module "nextcloud" {
+  source      = "./modules/stack"
+  name        = "nextcloud"
+  yaml_file   = "${path.module}/docker/nextcloud.yaml"
+  endpoint_id = portainer_environment.local.id
+  env_vars = {
+    DOCKER_APPDATA    = var.docker_appdata
+    NFS_FILES         = var.nfs_files
+    POSTGRES_PASSWORD = var.nextcloud_db_password
+    PUID              = var.puid
+    PGID              = var.pgid
+    TZ                = var.timezone
+  }
+}

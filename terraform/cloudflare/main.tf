@@ -15,7 +15,8 @@ locals {
     "profilarr-nonanime",
     "jellyseerr",
     "qbittorrent",
-    "immich"
+    "immich",
+    "nextcloud"
   ]
 
   dns_records = concat(

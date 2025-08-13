@@ -1,0 +1,25 @@
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:31.0.7
+    container_name: nextcloud
+    ports:
+      - 9200:443
+    volumes:
+      - ${DOCKER_APPDATA}/nextcloud-config:/config
+      - ${NFS_FILES}:/data
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17.5
+    container_name: nextcloud-postgres
+    volumes:
+      - ${DOCKER_APPDATA}/nextcloud-postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=nextcloud
+    restart: unless-stopped
