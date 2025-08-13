@@ -14,7 +14,8 @@ locals {
     "radarr-nonanime",
     "profilarr-nonanime",
     "jellyseerr",
-    "qbittorrent"
+    "qbittorrent",
+    "immich"
   ]
 
   dns_records = concat(

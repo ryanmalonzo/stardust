@@ -100,3 +100,46 @@ resource "portainer_stack" "jellyfin" {
     value = var.downloads_dir
   }
 }
+
+data "local_file" "immich" {
+  filename = "${path.module}/docker/immich.yaml"
+}
+
+resource "portainer_stack" "immich" {
+  name            = "immich"
+  deployment_type = "standalone"
+  method          = "string"
+  endpoint_id     = portainer_environment.local.id
+
+  stack_file_content = data.local_file.immich.content
+
+  env {
+    name  = "DB_DATA_LOCATION"
+    value = "${var.docker_appdata}/immich"
+  }
+
+  env {
+    name  = "DB_PASSWORD"
+    value = var.immich_db_password
+  }
+
+  env {
+    name  = "DB_USERNAME"
+    value = "immich"
+  }
+
+  env {
+    name  = "DB_DATABASE_NAME"
+    value = "immich"
+  }
+
+  env {
+    name  = "TZ"
+    value = var.timezone
+  }
+
+  env {
+    name  = "UPLOAD_LOCATION"
+    value = var.nfs_photos
+  }
+}

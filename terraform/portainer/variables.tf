@@ -23,6 +23,11 @@ variable "nfs_media" {
   default = "/mnt/media"
 }
 
+variable "nfs_photos" {
+  type    = string
+  default = "/mnt/photos"
+}
+
 variable "incomplete_downloads_dir" {
   type    = string
   default = "/opt/incomplete-downloads"
@@ -31,4 +36,9 @@ variable "incomplete_downloads_dir" {
 variable "downloads_dir" {
   type    = string
   default = "/opt/downloads"
+}
+
+variable "immich_db_password" {
+  type      = string
+  sensitive = true
 }
