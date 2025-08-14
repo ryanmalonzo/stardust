@@ -15,6 +15,11 @@
           - non-free
           - non-free-firmware
         state: present
+      register: deb822_result
+
+    - name: Output deb822_repository dest field
+      ansible.builtin.debug:
+        msg: "deb822_repository dest: {{ deb822_result.dest | default('not set') }}"
 
     - name: Update apt cache
       ansible.builtin.apt:
