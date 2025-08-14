@@ -21,26 +21,32 @@ bootstrap:
 docker:
 	ansible-playbook playbooks/06-install-docker.yml
 
+
+socket-proxy:
+	ansible-playbook playbooks/07-create-socket-proxy-network-and-volume.yml
+	ansible-playbook playbooks/08-deploy-socket-proxy.yml
+
 newt:
-	ansible-playbook playbooks/07-deploy-newt-agent.yml
+	ansible-playbook playbooks/09-deploy-newt-agent.yml
 
 portainer:
-	ansible-playbook playbooks/08-deploy-portainer-be.yml
+	ansible-playbook playbooks/10-deploy-portainer-be.yml
 
 install:
 	ansible-galaxy install -r requirements.yml
 
 help:
 	@echo "Available commands:"
-	@echo "  zfs-pool     - Create the ZFS pool on Proxmox host"
-	@echo "  zfs-dataset  - Create the ZFS dataset on Proxmox host"
-	@echo "  nfs-server   - Install and configure NFS server on Proxmox host"
-	@echo "  media-dirs   - Create media directories for anime/non-anime separation"
-	@echo "  nfs-client   - Mount NFS share on Docker VM"
-	@echo "  bootstrap    - Bootstrap the Pangolin VM (user, SSH, sudo)"
-	@echo "  docker       - Install Docker on Docker and Pangolin VMs"
-	@echo "  newt         - Deploy Newt agent on Docker VM"
-	@echo "  portainer    - Deploy Portainer on Docker VM"
-	@echo "  install      - Install Ansible Galaxy requirements"
+	@echo "  zfs-pool      - Create the ZFS pool on Proxmox host"
+	@echo "  zfs-dataset   - Create the ZFS dataset on Proxmox host"
+	@echo "  nfs-server    - Install and configure NFS server on Proxmox host"
+	@echo "  media-dirs    - Create media directories for anime/non-anime separation"
+	@echo "  nfs-client    - Mount NFS share on Docker VM"
+	@echo "  bootstrap     - Bootstrap the Pangolin VM (user, SSH, sudo)"
+	@echo "  docker        - Install Docker on Docker and Pangolin VMs"
+	@echo "  socket-proxy  - Create Docker network and volume, then deploy socket proxy stack"
+	@echo "  newt          - Deploy Newt agent on Docker VM"
+	@echo "  portainer     - Deploy Portainer on Docker VM"
+	@echo "  install       - Install Ansible Galaxy requirements"
 
 .DEFAULT_GOAL := help

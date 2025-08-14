@@ -1,0 +1,19 @@
+services:
+  socket-proxy:
+    image: "11notes/socket-proxy:2.1.3"
+    read_only: true
+    user: "0:994"
+    volumes:
+      - "/run/docker.sock:/run/docker.sock:ro"
+      - "socket-proxy:/run/proxy"
+    networks:
+      - socket-proxy
+    restart: unless-stopped
+
+volumes:
+  socket-proxy:
+    external: true
+
+networks:
+  socket-proxy:
+    external: true

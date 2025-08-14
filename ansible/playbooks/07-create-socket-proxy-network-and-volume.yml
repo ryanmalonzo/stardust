@@ -1,0 +1,18 @@
+---
+# Create Docker network and volume for socket proxy
+
+- name: Create Docker network and volume for socket proxy
+  hosts: docker
+  become: true
+  remote_user: stardust
+  tasks:
+    - name: Create Docker network for socket proxy
+      community.docker.docker_network:
+        name: socket-proxy
+        state: present
+        driver: bridge
+
+    - name: Create Docker volume for socket proxy
+      community.docker.docker_volume:
+        name: socket-proxy
+        state: present

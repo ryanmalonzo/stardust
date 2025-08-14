@@ -5,5 +5,9 @@ roles:
     version: "2.1.0"
 
 collections:
+  - name: community.docker
+    version: "4.7.0"
   - name: community.general
+    version: "10.7.3"
   - name: devsec.hardening
+    version: "10.3.1"

@@ -1,13 +1,4 @@
 services:
-  socket-proxy:
-    image: "11notes/socket-proxy:2.1.3"
-    read_only: true
-    user: "0:994"
-    volumes:
-      - "/run/docker.sock:/run/docker.sock:ro"
-      - "socket-proxy:/run/proxy"
-    restart: unless-stopped
-
   newt:
     image: fosrl/newt:1.3.4
     container_name: newt
@@ -18,9 +9,14 @@ services:
       - NEWT_ID={{ lookup('env', 'NEWT_ID') }}
       - NEWT_SECRET={{ lookup('env', 'NEWT_SECRET') }}
       - DOCKER_SOCKET=/run/proxy/docker.sock
-    depends_on:
+    networks:
       - socket-proxy
     restart: unless-stopped
 
 volumes:
   socket-proxy:
+    external: true
+
+networks:
+  socket-proxy:
+    external: true
