@@ -37,6 +37,9 @@ portainer:
 install:
 	ansible-galaxy install -r requirements.yml
 
+intel-vaapi:
+	ansible-playbook playbooks/10-install-intel-vaapi.yml
+
 help:
 	@echo "Available commands:"
 	@echo "  zfs-pool      - Create the ZFS pool on Proxmox host"
@@ -49,6 +52,7 @@ help:
 	@echo "  socket-proxy  - Create Docker network and volume, then deploy socket proxy stack"
 	@echo "  newt          - Deploy Newt agent on Docker VM"
 	@echo "  portainer     - Deploy Portainer on Docker VM"
+	@echo "  intel-vaapi   - Install Intel VAAPI drivers on Docker VM"
 	@echo "  install       - Install Ansible Galaxy requirements"
 
 .DEFAULT_GOAL := help

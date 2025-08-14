@@ -1,0 +1,35 @@
+---
+- name: Install Intel VAAPI and firmware on docker host
+  hosts: docker
+  become: true
+  tasks:
+    - name: Ensure non-free and non-free-firmware are present in main Debian repo
+      ansible.builtin.deb822_repository:
+        name: debian
+        types: [deb]
+        uris: http://deb.debian.org/debian
+        suites: ["{{ ansible_distribution_release }}"]
+        components:
+          - main
+          - contrib
+          - non-free
+          - non-free-firmware
+        state: present
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Intel VAAPI and firmware packages
+      ansible.builtin.apt:
+        name:
+          - vainfo
+          - intel-media-va-driver-non-free
+          - firmware-intel-graphics
+        state: present
+      register: package_install
+
+    - name: Reboot if packages were installed or upgraded
+      ansible.builtin.reboot:
+        msg: "Rebooting after Intel VAAPI/firmware install via Ansible."
+      when: package_install.changed

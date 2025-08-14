@@ -87,7 +87,23 @@ Install Docker on both Docker and Pangolin VMs using Ansible:
 make docker
 ```
 
-### 10. Deploy Newt Agent
+### 10. Deploy Docker Socket Proxy
+
+Deploy the Docker socket proxy stack to the Docker VM using Ansible:
+
+```bash
+make socket-proxy
+```
+
+### 11. Install Intel VAAPI and Firmware (Docker VM)
+
+Install Intel VAAPI drivers and firmware on the Docker VM using Ansible:
+
+```bash
+make intel-vaapi
+```
+
+### 12. Deploy Newt Agent
 
 Deploy Newt agent on the Docker VM using Ansible:
 
@@ -95,7 +111,7 @@ Deploy Newt agent on the Docker VM using Ansible:
 make newt
 ```
 
-### 11. Deploy Portainer
+### 13. Deploy Portainer
 
 Deploy Portainer on the Docker VM using Ansible:
 
@@ -103,7 +119,7 @@ Deploy Portainer on the Docker VM using Ansible:
 make portainer
 ```
 
-### 12. Deploy Application Stacks
+### 14. Deploy Application Stacks
 
 Deploy stacks via Portainer using Terraform:
 
@@ -112,7 +128,7 @@ cd terraform/portainer
 terraform apply
 ```
 
-### 13. Configure DNS
+### 15. Configure DNS
 
 Manage Cloudflare DNS records using Terraform:
 
@@ -121,6 +137,6 @@ cd terraform/cloudflare
 terraform apply
 ```
 
-### 14. Setup Tunnels
+### 16. Setup Tunnels
 
 Add tunnels via the Pangolin web UI (manual step)
