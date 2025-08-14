@@ -22,15 +22,17 @@ docker:
 	ansible-playbook playbooks/06-install-docker.yml
 
 
+
 socket-proxy:
-	ansible-playbook playbooks/07-create-socket-proxy-network-and-volume.yml
-	ansible-playbook playbooks/08-deploy-socket-proxy.yml
+	ansible-playbook playbooks/07-deploy-socket-proxy.yml
+
 
 newt:
-	ansible-playbook playbooks/09-deploy-newt-agent.yml
+	ansible-playbook playbooks/08-deploy-newt-agent.yml
+
 
 portainer:
-	ansible-playbook playbooks/10-deploy-portainer-be.yml
+	ansible-playbook playbooks/09-deploy-portainer-be.yml
 
 install:
 	ansible-galaxy install -r requirements.yml

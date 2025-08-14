@@ -1,13 +1,24 @@
 ---
-# Deploy socket proxy to Docker VM using Docker Compose v2
+# Create Docker network, volume, and deploy socket proxy stack to Docker VM
 
-- name: Deploy socket proxy to Docker VM
+- name: Setup and deploy socket proxy to Docker VM
   hosts: docker
   become: true
   remote_user: stardust
   vars:
     dest_compose_path: /home/stardust/socket-proxy/compose.yaml
   tasks:
+    - name: Create Docker network for socket proxy
+      community.docker.docker_network:
+        name: socket-proxy
+        state: present
+        driver: bridge
+
+    - name: Create Docker volume for socket proxy
+      community.docker.docker_volume:
+        name: socket-proxy
+        state: present
+
     - name: Ensure socket-proxy directory exists
       ansible.builtin.file:
         path: /home/stardust/socket-proxy
