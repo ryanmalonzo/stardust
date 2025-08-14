@@ -168,3 +168,35 @@ services:
     environment:
       - TZ=${TZ}
     restart: unless-stopped
+
+  fileflows:
+    image: revenz/fileflows:25.08
+    container_name: fileflows
+    ports:
+      - "19200:5000"
+    volumes:
+      - socket-proxy:/var/run
+      - ${DOCKER_APPDATA}/fileflows-temp:/temp
+      - ${DOCKER_APPDATA}/fileflows-data:/app/Data
+      - ${DOCKER_APPDATA}/fileflows-logs:/app/Logs
+      - ${DOCKER_APPDATA}/fileflows-common:/app/common
+      - ${NFS_MEDIA}/anime/movies:/media/anime/movies
+      - ${NFS_MEDIA}/anime/tv:/media/anime/tv
+      - ${NFS_MEDIA}/non-anime/movies:/media/non-anime/movies
+      - ${NFS_MEDIA}/non-anime/tv:/media/non-anime/tv
+    environment:
+      - TempPathHost=${DOCKER_APPDATA}/fileflows-temp
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    devices:
+      - "/dev/dri:/dev/dri"
+    restart: unless-stopped
+
+volumes:
+  socket-proxy:
+    external: true
+
+networks:
+  socket-proxy:
+    external: true
